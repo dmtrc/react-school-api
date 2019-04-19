@@ -1,0 +1,44 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "status": "DRAFT",
+      "channels": [],
+      "createdAt": "",
+      "updatedAt": "",
+      "createdBy": [],
+      "title": "",
+      "content": ""
+    },
+    {
+      "id": 2,
+      "status": "PUBLISHED",
+      "channels": [],
+      "createdAt": "",
+      "updatedAt": "",
+      "createdBy": [],
+      "title": "",
+      "content": ""
+    },
+    {
+      "id": 3,
+      "status": "PUBLISHED",
+      "channels": [],
+      "createdAt": "",
+      "updatedAt": "",
+      "createdBy": [],
+      "title": "",
+      "content": ""
+    },
+    {
+      "id": 4,
+      "status": "PUBLISHED",
+      "channels": [],
+      "createdAt": "",
+      "updatedAt": "",
+      "createdBy": [],
+      "title": "New post",
+      "content": "Super content of the new post"
+    }
+  ]
+}
