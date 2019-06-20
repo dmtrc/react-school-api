@@ -14,7 +14,8 @@ server.use(jsonServer.defaults());
 server.use(bodyParser());
 
 const SECRET_KEY = '123456789';
-const expiresIn = '1h';
+const expiresIn = 2000;
+let accessToken = null;
 
 // Create a token from a payload
 function createToken(payload){
@@ -22,9 +23,13 @@ function createToken(payload){
 }
 
 // Verify the token
-function verifyToken(token){
-  return  jwt.verify(token, SECRET_KEY, (err, decode) => decode !== undefined ?  decode : err)
-}
+const verifyToken = token => {
+  if ( token !== accessToken ) {
+    throw new Error();
+  }
+
+  return true;
+};
 
 // Check if the user exists in database
 function isAuthenticated({email, password}){
@@ -40,7 +45,15 @@ server.post('/auth/login', (req, res) => {
     return
   }
   const access_token = createToken({email, password});
-  res.status(200).json({access_token})
+
+  accessToken = access_token;
+
+  // Emulate token expiration
+  setTimeout(() => {
+    accessToken = null;
+  }, 3600000);
+
+  res.status(200).json({access_token});
 });
 
 server.use(/^(?!\/auth).*$/,  (req, res, next) => {
@@ -50,6 +63,17 @@ server.use(/^(?!\/auth).*$/,  (req, res, next) => {
     res.status(status).json({status, message});
     return
   }
+  try {
+    verifyToken(req.headers.authorization.split(' ')[1]);
+    next()
+  } catch (err) {
+    const status = 401;
+    const message = 'Error: access_token is not valid';
+    res.status(status).json({status, message})
+  }
+});
+
+server.use((req, res, next) => {
   try {
     verifyToken(req.headers.authorization.split(' ')[1]);
     next()
