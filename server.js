@@ -7,7 +7,7 @@ const DB_PATH = './db';
 const PORT = 8080;
 
 const server = jsonServer.create();
-const router = jsonServer.router(`${DB_PATH}/posts.json`);
+const postsdb = jsonServer.router(`${DB_PATH}/posts.json`);
 const userdb = JSON.parse(fs.readFileSync(`${DB_PATH}/users.json`, 'UTF-8'));
 
 server.use(jsonServer.defaults());
@@ -38,6 +38,7 @@ function isAuthenticated({email, password}){
 
 server.post('/auth/login', (req, res) => {
   const {email, password} = req.body;
+  console.log(email, password);
   if (isAuthenticated({email, password}) === false) {
     const status = 401;
     const message = 'Incorrect email or password';
@@ -84,7 +85,7 @@ server.use((req, res, next) => {
   }
 });
 
-server.use(router);
+server.use(postsdb);
 
 server.listen(PORT, () => {
   console.log(`Run Mock API Server on ${PORT}`);
